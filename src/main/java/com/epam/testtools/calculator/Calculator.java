@@ -1,5 +1,12 @@
+package com.epam.testtools.calculator;
+
+import com.epam.testtools.readers.ReadWriteExpressionFromFile;
+
 import java.math.BigInteger;
 import java.util.*;
+
+import static com.epam.testtools.Main.CONSOLE;
+import static com.epam.testtools.Main.FILES;
 
 public class Calculator {
     public final static String INCORRECT_EXPRESSION = "Expression is incorrect. Expression: ";
@@ -26,6 +33,16 @@ public class Calculator {
         OPERATORS_ARRAY.put(SUBTRACT, new Integer[]{0, LEFT_ASSOCIATION});
         OPERATORS_ARRAY.put(MULTIPLY, new Integer[]{5, LEFT_ASSOCIATION});
         OPERATORS_ARRAY.put(DIVIDE, new Integer[]{5, LEFT_ASSOCIATION});
+    }
+
+    public final String mode;
+    public final ReadWriteExpressionFromFile readWriteExpressionFromFile;
+
+    public Calculator(String mode, ReadWriteExpressionFromFile readWriteExpressionFromFile) {
+        this.mode = mode;
+        if (FILES.equals(mode)) {
+            this.readWriteExpressionFromFile = readWriteExpressionFromFile;
+        } else this.readWriteExpressionFromFile = null;
     }
 
     boolean isOperator(final String item) {
@@ -94,19 +111,19 @@ public class Calculator {
                 switch (item) {
                     case ADD:
                         stack.push(a.add(b).toString());
-                        System.out.printf("Operation: %s | arg1: %s | arg2: %s%n", ADD, a, b);
+                        writeOperationResult(ADD, a, b);
                         break;
                     case SUBTRACT:
                         stack.push(a.subtract(b).toString());
-                        System.out.printf("Operation: %s | arg1: %s | arg2: %s%n", SUBTRACT, a, b);
+                        writeOperationResult(SUBTRACT, a, b);
                         break;
                     case MULTIPLY:
                         stack.push(a.multiply(b).toString());
-                        System.out.printf("Operation: %s | arg1: %s | arg2: %s%n", MULTIPLY, a, b);
+                        writeOperationResult(MULTIPLY, a, b);
                         break;
                     case DIVIDE:
                         stack.push(a.divide(b).toString());
-                        System.out.printf("Operation: %s | arg1: %s | arg2: %s%n", DIVIDE, a, b);
+                        writeOperationResult(DIVIDE, a, b);
                         break;
                 }
             }
@@ -114,11 +131,26 @@ public class Calculator {
         return Double.parseDouble(stack.pop());
     }
 
+    private void writeOperationResult(String operation, BigInteger arg1, BigInteger arg2) {
+        if (FILES.equals(mode)) {
+            readWriteExpressionFromFile.writeResultToFile(String.format("Operation: %s | arg1: %s | arg2: %s%n", operation, arg1, arg2));
+        } else if (CONSOLE.equals(mode)) {
+            System.out.printf("Operation: %s | arg1: %s | arg2: %s%n", operation, arg1, arg2);
+        }
+    }
+
+    private void writeResult(String result) {
+        if (FILES.equals(mode)) {
+            readWriteExpressionFromFile.writeResultToFile("Result: " + result + "\n");
+        } else if (CONSOLE.equals(mode)) {
+            System.out.println("Result: " + result);
+        }
+    }
+
     void validateExpression(final String expression) {
         if (expression == null || expression.isEmpty()) {
             throw new IllegalArgumentException(INCORRECT_EXPRESSION + expression);
         }
-
         for (String item : REGEXPS_ARRAY
         ) {
             if (expression.matches(item)) {
@@ -128,13 +160,18 @@ public class Calculator {
     }
 
 
-    double calculate(final String expression) {
+    public double calculate(final String expression) {
+        try {
             validateExpression(expression);
+        } catch (IllegalArgumentException e) {
+            writeResult(e.getMessage());
+            throw new IllegalArgumentException(e.getMessage());
+        }
 
         final String[] splitExpression = expression.split(EXPRESSION_SPLIT_REGEXP);
         final String[] reversePolishNotation = convertToReversePolishNotation(splitExpression);
         final double result = resolveReversePolishNotation(reversePolishNotation);
-        System.out.println("Result: " + result);
+        writeResult(String.valueOf(result));
 
         return result;
     }
