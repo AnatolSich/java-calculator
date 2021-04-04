@@ -1,0 +1,47 @@
+Operation: + | arg1: 0 | arg2: 15
+Result: 15.0
+Operation: + | arg1: 20 | arg2: 55
+Operation: + | arg1: 75 | arg2: 12
+Result: 87.0
+Operation: + | arg1: 100 | arg2: 15
+Operation: + | arg1: 115 | arg2: 10
+Operation: + | arg1: 125 | arg2: 900
+Result: 1025.0
+Operation: - | arg1: 0 | arg2: 15
+Result: -15.0
+Operation: - | arg1: 20 | arg2: 55
+Operation: - | arg1: -35 | arg2: 12
+Result: -47.0
+Operation: - | arg1: 100 | arg2: 15
+Operation: - | arg1: 85 | arg2: 10
+Operation: - | arg1: 75 | arg2: 30
+Result: 45.0
+Operation: * | arg1: 2 | arg2: 12
+Result: 24.0
+Operation: * | arg1: 100 | arg2: 40
+Operation: * | arg1: 4000 | arg2: 37
+Result: 148000.0
+Operation: * | arg1: 2 | arg2: 5
+Operation: * | arg1: 10 | arg2: 1
+Operation: * | arg1: 10 | arg2: 0
+Result: 0.0
+Operation: / | arg1: 0 | arg2: 2
+Result: 0.0
+Operation: / | arg1: 100 | arg2: 2
+Operation: / | arg1: 50 | arg2: 5
+Result: 10.0
+Operation: / | arg1: 36 | arg2: 2
+Operation: / | arg1: 18 | arg2: 2
+Operation: / | arg1: 9 | arg2: 3
+Result: 3.0
+Operation: * | arg1: 2 | arg2: 2
+Operation: + | arg1: 2 | arg2: 4
+Result: 6.0
+Operation: - | arg1: 10 | arg2: 2
+Operation: / | arg1: 8 | arg2: 4
+Result: 2.0
+Operation: - | arg1: 10 | arg2: 2
+Operation: / | arg1: 9 | arg2: 3
+Operation: + | arg1: 8 | arg2: 3
+Result: 11.0
+Result: Expression is incorrect. Expression: 10.15+36,1
